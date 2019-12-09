@@ -1,0 +1,8 @@
+.idea
+__pycache__
+confs
+databases
+emotion_rec
+tools
+venv
+view*
