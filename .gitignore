@@ -5,5 +5,5 @@ databases
 emotion_rec
 tools
 venv
-view*
+view_*
 config.*
