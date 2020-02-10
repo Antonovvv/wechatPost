@@ -26,7 +26,7 @@ from werkzeug.utils import import_string
 
 from config import *
 from utils import create_nonce_str, create_timestamp
-# from emotion_rec.emotion import Emotion
+# from emotion_rec.emotion import Emotion   # 语料情感分析
 from ext import database as db
 from ext import logger
 from models import ImageFile
@@ -44,7 +44,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db.init_app(app)
 client = WeChatClient(APPID, APPSECRET)
-waclient = WeChatClient(WAID, WASECRET)
+# waclient = WeChatClient(WAID, WASECRET)   # 小程序client
 
 for bp_name in blueprints:
     bp = import_string(bp_name)
@@ -53,7 +53,7 @@ for bp_name in blueprints:
 
 '''
 app.config['SESSION_USE_SIGNER'] = False
-app.config['SECRET_KEY'] = 'salty980813'
+app.config['SECRET_KEY'] = 'xxx'
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)  # 保存一小时
 app.config['SESSION_TYPE'] = 'redis'
@@ -72,21 +72,22 @@ def index():
     return 'sorry'
 
 
-@app.route('/wechatapp')
+# 小程序code2session测试
+'''@app.route('/wechatapp')
 def wea():
     code = request.args.get('code', '')
     res = waclient.wxa.code_to_session(code)
     logger.info(res)
-    return jsonify(res['openid'])
+    return jsonify(res['openid'])'''
 
 
 @app.route('/oauth')
 def oauth():
     view = request.args.get('view', 'shop')
-    my_url = quote('http://www.yyandii.com/wechat/{}'.format(view), safe='')
+    my_url = quote('http://www.xxx.com/wechat/{}'.format(view), safe='')
     open_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?'\
         + 'appid={}&redirect_uri={}&response_type=code'\
-        + '&scope=snsapi_base&state=1024#wechat_redirect'
+        + '&scope=snsapi_base&state=1234#wechat_redirect'
     redirect_url = open_url.format(APPID, my_url)
     return redirect(redirect_url)
 
@@ -123,7 +124,7 @@ def wechat():
     timestamp = request.args.get('timestamp', '')
     nonce = request.args.get('nonce', '')
     try:
-        check_signature(TOKEN, signature, timestamp, nonce)  # noqa
+        check_signature(TOKEN, signature, timestamp, nonce)
     except InvalidSignatureException:
         abort(403)
     if request.method == 'GET':
@@ -156,7 +157,7 @@ def wechat():
                     reply = create_reply(push.content, message=push)
 
                 elif conn_user.get(push.source) == b"emotion":
-                    rec = Emotion(push.content)
+                    rec = Emotion(push.content) # 语料情感分析
                     recognized = rec.recognize()
                     reply = create_reply(recognized, message=push)
         '''
