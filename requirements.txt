@@ -69,4 +69,4 @@ wechatpy==1.8.3
 requests==2.22.0
 flask_script==2.0.6
 flask_migrate==2.5.2
-cryptography==2.8
+cryptography==3.2
