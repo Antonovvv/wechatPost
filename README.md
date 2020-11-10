@@ -26,6 +26,8 @@ THUMBNAIL_FOLDER = '/user_files/thumbnaildir'
 启动命令：`gunicorn -c gunicorn.conf.py app:app`
 可以选用Supervisor作进程管理。
 
+可以使用virtualenvwrapper进行虚拟环境的依赖管理
+
 ### 填坑相关
 [微信公众号开发文档](https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html)
 
